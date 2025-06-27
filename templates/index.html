@@ -2,121 +2,721 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Predicción de Estrés</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f0e8; /* beige claro */
-            color: #4b2e2e; /* marrón oscuro */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #6b4f3b;
-            margin-bottom: 20px;
-        }
-
-        form {
-            background-color: #fffaf3;
-            padding: 25px 35px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        label {
-            display: block;
-            margin: 12px 0 4px;
-            font-weight: bold;
-            color: #5a3b2e;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #cbbf9d;
-            border-radius: 6px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-
-        button {
-            background-color: #a67c52;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #8c6239;
-        }
-
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e6ddcc;
-            border: 2px solid #b09a84;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 400px;
-        }
-
-        .low {
-            color: #4b8b3b;
-        }
-
-        .moderate {
-            color: #d38c14;
-        }
-
-        .high {
-            color: #c62828;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jousvex - Predicción de Estrés Académico con IA</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h1>Predicción del Nivel de Estrés</h1>
-
-    <form method="POST">
-        <label>Horas de estudio por día:</label>
-        <input type="number" name="study_hours" step="0.1" required>
-
-        <label>Horas en actividades extracurriculares:</label>
-        <input type="number" name="extracurricular_hours" step="0.1" required>
-
-        <label>Horas de sueño por día:</label>
-        <input type="number" name="sleep_hours" step="0.1" required>
-
-        <label>Horas de socialización por día:</label>
-        <input type="number" name="social_hours" step="0.1" required>
-
-        <label>Horas de actividad física por día:</label>
-        <input type="number" name="physical_hours" step="0.1" required>
-
-        <label>Promedio académico (GPA):</label>
-        <input type="number" name="gpa" step="0.01" required>
-
-        <button type="submit">Predecir Estrés</button>
-    </form>
-
-    {% if prediction %}
-        <div class="result 
-            {% if prediction == 'Bajo' %}low
-            {% elif prediction == 'Moderado' %}moderate
-            {% elif prediction == 'Alto' %}high
-            {% endif %}">
-            <h2>Nivel de Estrés Predicho: {{ prediction }}</h2>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>Jousvex</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#inicio" class="nav-link">Inicio</a>
+                <a href="#estadisticas" class="nav-link">Estadísticas</a>
+                <a href="#caracteristicas" class="nav-link">Características</a>
+                <a href="#como-funciona" class="nav-link">¿Cómo funciona?</a>
+                <a href="#prediccion" class="nav-link">Predicción</a>
+                <a href="#equipo" class="nav-link">Equipo</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    {% endif %}
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-sparkles"></i>
+                    <span>Stress academy</span>
+                </div>
+                <h1 class="hero-title">
+                    Predice y Gestiona el 
+                    <span class="gradient-text">Estrés Académico</span>
+                    con Técnicas Computacionales de Inteligencia Artifical
+                </h1>
+                <p class="hero-description">
+                    Jousvex integra modelos de Machine Learning y Large Language Models para predecir 
+                    el nivel de estrés académico en estudiantes universitarios, ofreciendo 
+                    retroalimentación personalizada y recomendaciones psicoeducativas.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#prediccion" class="btn btn-primary">
+                        <i class="fas fa-chart-line"></i>
+                        Hacer predicción
+                    </a>
+                    <a href="#caracteristicas" class="btn btn-secondary">
+                        <i class="fas fa-info-circle"></i>
+                        Conocer más
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">97%</span>
+                        <span class="stat-label">Precisión</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2000+</span>
+                        <span class="stat-label">Estudiantes</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Disponible</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <i class="fas fa-brain"></i>
+                    <span>Machine Learning</span>
+                </div>
+                <div class="floating-card card-2">
+                    <i class="fas fa-comments"></i>
+                    <span>LLM Assistant</span>
+                </div>
+                <div class="floating-card card-3">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Análisis Predictivo</span>
+                </div>
+                <div class="hero-circle"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="estadisticas" class="statistics">
+        <div class="container">
+            <div class="section-header">
+                <h2>Datos Curiosos sobre el Estrés Académico</h2>
+                <p>Estadísticas que revelan la importancia de monitorear el bienestar estudiantil</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-number" data-target="87">0</div>
+                    <div class="stat-text">% de estudiantes universitarios reportan estrés académico</div>
+                    <div class="stat-source">Fuente: American College Health Association, 2023</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number" data-target="6.5">0</div>
+                    <div class="stat-text">horas promedio de sueño de estudiantes estresados</div>
+                    <div class="stat-source">Recomendado: 7-9 horas por noche</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-number" data-target="45">0</div>
+                    <div class="stat-text">% de estudiantes consideran abandonar por estrés</div>
+                    <div class="stat-source">National Survey of Student Engagement</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-number" data-target="73">0</div>
+                    <div class="stat-text">% mejoran su rendimiento con manejo del estrés</div>
+                    <div class="stat-source">Journal of Educational Psychology</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="stat-number" data-target="30">0</div>
+                    <div class="stat-text">% de reducción en capacidad de memoria por estrés crónico</div>
+                    <div class="stat-source">Neurobiología del Estrés, 2022</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" data-target="92">0</div>
+                    <div class="stat-text">% de estudiantes que se benefician del apoyo psicoeducativo</div>
+                    <div class="stat-source">International Journal of Student Wellbeing</div>
+                </div>
+            </div>
+            
+            <div class="curiosity-facts">
+                <h3>¿Sabías que...?</h3>
+                <div class="facts-grid">
+                    <div class="fact-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <p>El estrés académico puede <strong>mejorar el rendimiento</strong> cuando se mantiene en niveles moderados, pero se vuelve contraproducente en niveles altos.</p>
+                    </div>
+                    <div class="fact-card">
+                        <i class="fas fa-dumbbell"></i>
+                        <p>Solo <strong>20 minutos de ejercicio</strong> pueden reducir significativamente los niveles de cortisol (hormona del estrés) en estudiantes.</p>
+                    </div>
+                    <div class="fact-card">
+                        <i class="fas fa-moon"></i>
+                        <p>La falta de sueño aumenta el estrés en un <strong>60%</strong> y reduce la capacidad de concentración hasta en un 40%.</p>
+                    </div>
+                    <div class="fact-card">
+                        <i class="fas fa-smile"></i>
+                        <p>Los estudiantes que practican <strong>mindfulness</strong> muestran una reducción del 58% en síntomas de ansiedad académica.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="caracteristicas" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Características principales</h2>
+                <p>Tecnología avanzada para el bienestar estudiantil</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Predicción con IA</h3>
+                    <p>Algoritmos de Machine Learning entrenados para predecir niveles de estrés con alta precisión basándose en patrones de estilo de vida.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Asistente conversacional</h3>
+                    <p>Chatbot inteligente que ofrece recomendaciones personalizadas.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Análisis integral</h3>
+                    <p>Evaluación completa considerando horas de estudio, sueño, actividades extracurriculares y rendimiento académico.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Para estudiantes y orientadores</h3>
+                    <p>Herramienta diseñada para facilitar procesos de acompañamiento integral en entornos educativos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Modelo Validado</h3>
+                    <p>El Perceptrón Multicapa (MLP) fue entrenado y validado con datos reales, alcanzando altos niveles de precisión en la predicción del estrés académico.</p>
+
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Te escuchamos</h3>
+                    <p>Cada dato que compartes nos ayuda a comprender cómo te sientes.</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="como-funciona" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>¿Cómo funciona Jousvex?</h2>
+                <p>Un proceso simple y científicamente respaldado</p>
+            </div>
+            
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Recopilación de Datos</h3>
+                        <p>Completas un formulario detallado sobre tus hábitos de estudio, sueño, actividades físicas y sociales.</p>
+                        <div class="step-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Análisis con técnicas computacionales de IA</h3>
+                        <p>Nuestro modelo de Machine Learning analiza tus datos usando algoritmos entrenados con miles de casos.</p>
+                        <div class="step-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Predicción Personalizada</h3>
+                        <p>Obtienes una predicción precisa de tu nivel de estrés académico: Bajo, Moderado o Alto.</p>
+                        <div class="step-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Recomendaciones Inteligentes</h3>
+                        <p>Recibes consejos personalizados y estrategias basadas en evidencia científica para mejorar tu bienestar.</p>
+                        <div class="step-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Prediction Form Section -->
+    <section id="prediccion" class="prediction-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Predicción de nivel de estrés</h2>
+                <p>Completa el formulario para obtener tu predicción personalizada</p>
+            </div>
+        
+            <div class="simple-form-container">
+                <form id="stressForm" class="stress-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="study_hours">
+                                <i class="fas fa-book"></i>
+                                Horas de estudio al día
+                            </label>
+                            <input type="range" id="study_hours" name="study_hours" min="0" max="24" step="0.1" value="6.0" class="custom-slider">
+                            <div class="slider-value">
+                                <span id="studyValue">6.0</span> horas
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sleep_hours">
+                                <i class="fas fa-bed"></i>
+                                Horas de sueño por noche
+                            </label>
+                            <input type="range" id="sleep_hours" name="sleep_hours" min="0" max="24" step="0.1" value="7.5" class="custom-slider">
+                            <div class="slider-value">
+                                <span id="sleepValue">7.5</span> horas
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="extracurricular_hours">
+                                <i class="fas fa-running"></i>
+                                Actividades extracurriculares al día
+                            </label>
+                            <input type="range" id="extracurricular_hours" name="extracurricular_hours" min="0" max="24" step="0.1" value="2.5" class="custom-slider">
+                            <div class="slider-value">
+                                <span id="extraValue">2.5</span> horas
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="social_hours">
+                                <i class="fas fa-users"></i>
+                                Tiempo social al día
+                            </label>
+                            <input type="range" id="social_hours" name="social_hours" min="0" max="24" step="0.1" value="3.5" class="custom-slider">
+                            <div class="slider-value">
+                                <span id="socialValue">3.5</span> horas
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="physical_hours">
+                                <i class="fas fa-dumbbell"></i>
+                                Ejercicio físico al día
+                            </label>
+                            <input type="range" id="physical_hours" name="physical_hours" min="0" max="24" step="0.1" value="1.0" class="custom-slider">
+                            <div class="slider-value">
+                                <span id="physicalValue">1.0</span> horas
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gpa">
+                                <i class="fas fa-graduation-cap"></i>
+                                Promedio académico (GPA)
+                            </label>
+                            <input type="range" id="gpa" name="gpa" min="0" max="4" step="0.1" value="3.5" class="custom-slider">
+                            <div class="slider-value">
+                                <span id="gpaValue">3.5</span> / 4.0
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large" id="predictBtn">
+                        <i class="fas fa-magic"></i>
+                        <span>Predecir Nivel de Estrés</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                </form>
+
+                <!-- Results Section -->
+                <div class="results-container" id="resultsContainer" style="display: none;">
+                    <div class="result-card" id="resultCard">
+                        <div class="result-icon" id="resultIcon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>Tu nivel de estrés</h3>
+                        <div class="result-level" id="resultLevel">
+                            <!-- Result will be inserted here -->
+                        </div>
+                        <div class="result-description" id="resultDescription">
+                            <!-- Description will be inserted here -->
+                        </div>
+                        <div class="result-recommendations" id="resultRecommendations">
+                            <!-- Recommendations will be inserted here -->
+                        </div>
+                        
+                        <div class="result-actions">
+                            <button class="btn btn-secondary" id="getFeedbackBtn">
+                                <i class="fas fa-comments"></i>
+                                Quiero recibir mayor retroalimentación
+                            </button>
+                            <button class="btn btn-outline" id="restartBtn">
+                                <i class="fas fa-redo"></i>
+                                Nueva predicción
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Form -->
+                <div class="feedback-container" id="feedbackContainer" style="display: none;">
+                    <div class="feedback-card">
+                        <div class="feedback-header">
+                            <i class="fas fa-user-circle"></i>
+                            <h3>Cuéntanos más sobre ti</h3>
+                            <p>Para darte recomendaciones más personalizadas</p>
+                        </div>
+                        
+                        <form id="feedbackForm" class="feedback-form">
+                            <div class="feedback-grid">
+                                <div class="form-group">
+                                    <label>¿En qué rango de edad te encuentras?</label>
+                                    <select id="age_range" name="age_range" required>
+                                        <option value="">Selecciona tu edad</option>
+                                        <option value="16-18">16-18 años</option>
+                                        <option value="19-21">19-21 años</option>
+                                        <option value="22-24">22-24 años</option>
+                                        <option value="25-27">25-27 años</option>
+                                        <option value="28+">28+ años</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>¿Qué carrera estudias?</label>
+                                    <input type="text" id="career" name="career" placeholder="Ej: Ingeniería, Psicología, Medicina..." required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>¿En qué semestre/año estás?</label>
+                                    <select id="academic_level" name="academic_level" required>
+                                        <option value="">Selecciona</option>
+                                        <option value="1-2">1° - 2° semestre</option>
+                                        <option value="3-4">3° - 4° semestre</option>
+                                        <option value="5-6">5° - 6° semestre</option>
+                                        <option value="7-8">7° - 8° semestre</option>
+                                        <option value="9+">9° semestre o más</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>¿Caminas o haces ejercicio regularmente?</label>
+                                    <div class="radio-group">
+                                        <label class="radio-option">
+                                            <input type="radio" name="exercise_habit" value="daily" required>
+                                            <span>Diariamente</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="exercise_habit" value="weekly" required>
+                                            <span>Varias veces por semana</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="exercise_habit" value="rarely" required>
+                                            <span>Rara vez</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="exercise_habit" value="never" required>
+                                            <span>Nunca</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>¿Cuáles son tus hobbies principales?</label>
+                                    <textarea id="hobbies" name="hobbies" placeholder="Ej: Leer, videojuegos, música, deportes, arte..." rows="3" required></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>¿Vives solo/a o con familia/compañeros?</label>
+                                    <select id="living_situation" name="living_situation" required>
+                                        <option value="">Selecciona</option>
+                                        <option value="family">Con familia</option>
+                                        <option value="roommates">Con compañeros/roommates</option>
+                                        <option value="alone">Solo/a</option>
+                                        <option value="partner">Con pareja</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>¿Trabajas mientras estudias?</label>
+                                    <div class="radio-group">
+                                        <label class="radio-option">
+                                            <input type="radio" name="work_status" value="full-time" required>
+                                            <span>Tiempo completo</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="work_status" value="part-time" required>
+                                            <span>Medio tiempo</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="work_status" value="occasional" required>
+                                            <span>Ocasionalmente</span>
+                                        </label>
+                                        <label class="radio-option">
+                                            <input type="radio" name="work_status" value="no" required>
+                                            <span>No trabajo</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label>¿Qué te causa más estrés en tus estudios?</label>
+                                    <textarea id="stress_sources" name="stress_sources" placeholder="Ej: Exámenes, trabajos en grupo, falta de tiempo, presión familiar..." rows="3" required></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-large" id="generateFeedbackBtn">
+                                <i class="fas fa-sparkles"></i>
+                                <span>Generar retroalimentación</span>
+                                <div class="loading-spinner"></div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- AI Feedback Results -->
+                <div class="ai-feedback-container" id="aiFeedbackContainer" style="display: none;">
+                    <div class="ai-feedback-card">
+                        <div class="ai-feedback-header">
+                            <i class="fas fa-robot"></i>
+                            <h3>Retroalimentación personalizada con IA</h3>
+                            <p>Recomendaciones específicas para tu situación</p>
+                        </div>
+                        
+                        <div class="ai-feedback-content" id="aiFeedbackContent">
+                            <!-- AI generated content will be inserted here -->
+                        </div>
+                        
+                        <div class="ai-feedback-actions">
+                            <button class="btn btn-primary" id="newAnalysisBtn">
+                                <i class="fas fa-redo"></i>
+                                Nuevo análisis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+<section id="equipo" class="team">
+    <div class="container">
+        <div class="section-header">
+            <h2>Conoce al equipo</h2>
+            <p>Los creadores detrás de Jousvex</p>
+        </div>
+        
+        <div class="team-cards">
+            <div class="team-card" data-member="karly">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="member-avatar">
+                            <img src="/static/image/Karly.jpeg" alt="Karly M. Velásquez">
+                        </div>
+                        <h3>Karly M. Velásquez</h3>
+                        <p class="member-title"></p>
+                        <div class="card-glow"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-card" data-member="carlos">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="member-avatar">
+                            <img src="/static/image/Giovanny.jpeg" alt="Carlos G. Hidalgo">
+                        </div>
+                        <h3>Carlos G. Hidalgo</h3>
+                        <p class="member-title"></p>
+                        <div class="card-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="team-mission">
+            <div class="mission-content">
+                <h3>Nuestra Misión</h3>
+                <p>
+                    Somos una estudiante y un profesional unidos por una misma causa: transformar la experiencia universitaria a través de la tecnología. 
+                    Jousvex nació de vivencias reales con el estrés académico y del firme propósito de brindar apoyo a quienes enfrentan estos desafíos. 
+                    Creemos que el bienestar emocional debe ser parte fundamental del aprendizaje, y trabajamos para que cada estudiante se sienta comprendido, acompañado y empoderado.
+                </p>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- FAQ Section - Chat Style -->
+<section id="faq" class="faq-chat">
+    <div class="container">
+        <div class="section-header">
+            <h2>Pregúntale a Jousvex</h2>
+            <p>¡Elige la pregunta frecuente y CONÓCENOS!</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="chat-info">
+                    <h3>Jousvex Assistant</h3>
+                    <span class="status">
+                        <div class="status-dot"></div>
+                        En línea
+                    </span>
+                </div>
+                <div class="chat-actions">
+                    <button class="minimize-btn">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message" data-delay="500">
+                    <div class="message-avatar">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-bubble">
+                            ¡Hola! 👋 Soy el asistente de Jousvex. Elige una pregunta y con gusto responderé 
+                        </div>
+                        <div class="message-time">Ahora</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-questions">
+                <div class="question-suggestions">
+                    <p>Preguntas frecuentes:</p>
+                    <div class="suggestion-chips">
+                        <button class="chip" data-question="precision">
+                            <i class="fas fa-target"></i>
+                            ¿Qué tan precisa es la predicción?
+                        </button>
+                        <button class="chip" data-question="therapy">
+                            <i class="fas fa-user-md"></i>
+                            ¿Reemplaza la terapia?
+                        </button>
+                        <button class="chip" data-question="frequency">
+                            <i class="fas fa-calendar"></i>
+                            ¿Con qué frecuencia usar?
+                        </button>
+                        <button class="chip" data-question="students">
+                            <i class="fas fa-graduation-cap"></i>
+                            ¿Para todos los estudiantes?
+                        </button>
+                        <button class="chip" data-question="created">
+                            <i class="fas fa-calendar-alt"></i>
+                            ¿Cuándo fue creada Jousvex?
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-brain"></i>
+                        <span>Jousvex</span>
+                    </div>
+                    <p>Tecnología avanzada para el bienestar estudiantil y la predicción de estrés académico.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Producto</h4>
+                        <a href="#caracteristicas">Características</a>
+                        <a href="#prediccion">Predicción</a>
+                        <a href="#como-funciona">Cómo Funciona</a>
+                        <a href="#">Documentación</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Soporte</h4>
+                        <a href="#faq">FAQ</a>
+                        <a href="#">Ayuda</a>
+                        <a href="#">Comunidad</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="#">Privacidad</a>
+                        <a href="#">Términos</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">Ética IA</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Jousvex. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>
