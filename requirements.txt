@@ -4,3 +4,4 @@ numpy
 gunicorn
 flask_cors
 dotenv
+openai>=1.0.0

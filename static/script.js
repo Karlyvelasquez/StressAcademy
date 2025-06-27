@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
       delay: 2300,
     },
     created: {
-      text: "¡Excelente pregunta! 🗓️ Jousvex fue creada en junio de 2025 en la hermosa ciudad de Cali, Colombia. Nació de Karly Mariana y Carlos Giovanny que experimentaron de primera mano los desafíos del estrés académico y decidieron crear una solución innovadora usando IA. ¡Visión para el cambio!",
+      text: "¡Excelente pregunta! 🗓️ Jousvex fue creada en junio de 2025 en la hermosa ciudad de Cali, Colombia. Nació de Karly Mariana y Carlos Giovanny que experimentaron de primera mano los desafíos del estrés académico y decidieron crear una solución innovadora. ¡Visión para el cambio!",
       delay: 2500,
     },
     default: {
@@ -276,8 +276,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Simplified Prediction Form Functionality
 document.addEventListener("DOMContentLoaded", () => {
-  // Configuration
-  const FLASK_API_URL = "http://localhost:5000/api/predict"
+  // Configuration 
+  const BASE_URL = window.location.origin // Usa el mismo origen que la página
+  const FLASK_API_URL = `${BASE_URL}/api/predict`
+  const FEEDBACK_API_URL = `${BASE_URL}/api/generate-feedback`
+
+  console.log(`🔗 Base URL: ${BASE_URL}`)
+  console.log(`🔗 API URLs configuradas:`)
+  console.log(`   - Predicción: ${FLASK_API_URL}`)
+  console.log(`   - Feedback: ${FEEDBACK_API_URL}`)
 
   let currentStressLevel = null
   let currentStressData = null
@@ -352,10 +359,11 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 
-  // Predict with ML Model
+  // Predict with ML Model 
   async function predictWithMLModel(formData) {
     try {
-      console.log("Enviando datos al modelo ML:", formData)
+      console.log("📊 Enviando datos al modelo ML:", formData)
+      console.log("📊 URL:", FLASK_API_URL)
 
       const response = await fetch(FLASK_API_URL, {
         method: "POST",
@@ -364,11 +372,19 @@ document.addEventListener("DOMContentLoaded", () => {
           Accept: "application/json",
         },
         body: JSON.stringify(formData),
-        mode: "cors",
+        credentials: "same-origin", // Importante para CORS
       })
 
+      console.log("📊 Response status:", response.status)
+      console.log("📊 Response headers:", [...response.headers.entries()])
+
       if (!response.ok) {
-        const errorData = await response.json()
+        let errorData
+        try {
+          errorData = await response.json()
+        } catch {
+          errorData = { error: `Error del servidor: ${response.status}` }
+        }
         throw new Error(errorData.error || `Error del servidor: ${response.status}`)
       }
 
@@ -455,7 +471,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
         ${probabilitiesHtml}
         <div style="margin-top: 15px; padding: 12px; background: rgba(46, 125, 50, 0.1); border-radius: 8px; font-size: 0.9rem; color: var(--text-muted); border-left: 4px solid #2e7d32;">
-          <i class="fas fa-brain"></i> <strong>Modelo:</strong> ${result.modelInfo}
+          <i class="fas fa-brain"></i> <strong>Modelo:</strong> MLP Neural Network
           <br>
           <i class="fas fa-check-circle"></i> Predicción del modelo ML con conversión automática
         </div>
@@ -499,79 +515,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Generate AI feedback with OpenAI
+  // Generate AI feedback 
   async function generateAIFeedback(personalData) {
     try {
-      console.log("🤖 Generando retroalimentación con IA...")
+      console.log("Generando retroalimentación con IA...")
+      console.log("URL:", FEEDBACK_API_URL)
 
-      const prompt = `
-Eres un psicólogo especializado en bienestar estudiantil. Un estudiante universitario ha completado una evaluación de estrés académico y ha obtenido un nivel de estrés "${currentStressLevel}".
+      const requestData = {
+        personal_data: personalData,
+        stress_level: currentStressLevel,
+        stress_data: currentStressData?.input_data || {},
+      }
 
-Información del estudiante:
-- Nivel de estrés: ${currentStressLevel}
-- Edad: ${personalData.age_range}
-- Carrera: ${personalData.career}
-- Semestre: ${personalData.academic_level}
-- Ejercicio: ${personalData.exercise_habit}
-- Hobbies: ${personalData.hobbies}
-- Situación de vivienda: ${personalData.living_situation}
-- Trabajo: ${personalData.work_status}
-- Principales fuentes de estrés: ${personalData.stress_sources}
+      console.log("Datos a enviar:", requestData)
 
-Datos de hábitos académicos:
-- Horas de estudio: ${currentStressData?.input_data?.study_hours || "N/A"} horas/día
-- Horas de sueño: ${currentStressData?.input_data?.sleep_hours || "N/A"} horas/noche
-- Actividades extracurriculares: ${currentStressData?.input_data?.extracurricular_hours || "N/A"} horas/día
-- Tiempo social: ${currentStressData?.input_data?.social_hours || "N/A"} horas/día
-- Ejercicio físico: ${currentStressData?.input_data?.physical_hours || "N/A"} horas/día
-- GPA: ${currentStressData?.input_data?.gpa || "N/A"}/4.0
-
-Por favor, proporciona:
-
-1. **Análisis Personalizado**: Una evaluación específica de su situación considerando todos los factores mencionados.
-
-2. **Recomendaciones Específicas**: Al menos 5-7 recomendaciones concretas y personalizadas basadas en su perfil, carrera, y circunstancias particulares.
-
-3. **Plan de Acción**: Un plan semanal específico con actividades y horarios sugeridos.
-
-4. **Recursos Adicionales**: Recursos específicos (apps, técnicas, libros) que serían útiles para su situación particular.
-
-Mantén un tono empático, profesional y motivador. Usa emojis ocasionalmente para hacer el texto más amigable. Estructura la respuesta con títulos claros y listas organizadas.
-`
-
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      const response = await fetch(FEEDBACK_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          Accept: "application/json",
         },
-        body: JSON.stringify({
-          model: "gpt-4",
-          messages: [
-            {
-              role: "system",
-              content:
-                "Eres un psicólogo especializado en bienestar estudiantil universitario. Proporciona consejos empáticos, profesionales y basados en evidencia científica.",
-            },
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
-          max_tokens: 1500,
-          temperature: 0.7,
-        }),
+        body: JSON.stringify(requestData),
+        credentials: "same-origin", // Importante para CORS
       })
 
+      console.log("Response status:", response.status)
+      console.log("Response headers:", [...response.headers.entries()])
+
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error?.message || `Error de OpenAI: ${response.status}`)
+        let errorData
+        try {
+          errorData = await response.json()
+        } catch {
+          errorData = { error: `Error del servidor: ${response.status}` }
+        }
+        throw new Error(errorData.error || `Error del servidor: ${response.status}`)
       }
 
-      const data = await response.json()
-      return data.choices[0].message.content
+      const result = await response.json()
+      console.log("Respuesta del feedback:", result)
+
+      if (result.status === "success" && result.feedback) {
+        return result.feedback
+      } else {
+        throw new Error(result.error || "Error generando feedback")
+      }
     } catch (error) {
-      console.error(" Error generando feedback con IA:", error)
+      console.error("Error generando feedback con IA:", error)
       throw error
     }
   }
@@ -596,11 +586,11 @@ Mantén un tono empático, profesional y motivador. Usa emojis ocasionalmente pa
       aiFeedbackContent.innerHTML = `
     <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
       <div style="width: 60px; height: 60px; border: 4px solid var(--border-color); border-top: 4px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-      <h4 style="color: var(--primary-color); margin-bottom: 10px;">🤖 Generando tu retroalimentación personalizada...</h4>
+      <h4 style="color: var(--primary-color); margin-bottom: 10px;">Generando tu retroalimentación personalizada...</h4>
       <p style="margin-bottom: 15px;">Nuestro asistente de IA está analizando tu información para crear recomendaciones específicas para tu situación.</p>
       <div style="background: rgba(139, 69, 19, 0.1); border-radius: 12px; padding: 15px; margin-top: 20px;">
         <p style="font-size: 0.9rem; margin: 0; font-style: italic;">
-          ⏱️ Esto puede tomar entre 10-30 segundos dependiendo de la complejidad de tu perfil...
+          ⏱️ Esto puede tomar entre 10-15 segundos dependiendo de la complejidad de tu perfil...
         </p>
       </div>
     </div>
@@ -621,7 +611,7 @@ Mantén un tono empático, profesional y motivador. Usa emojis ocasionalmente pa
     }
 
     try {
-      console.log("🤖 Generando retroalimentación personalizada:", personalData)
+      console.log("Generando retroalimentación personalizada:", personalData)
       const aiFeedback = await generateAIFeedback(personalData)
 
       // Display AI feedback
@@ -654,14 +644,14 @@ Mantén un tono empático, profesional y motivador. Usa emojis ocasionalmente pa
         feedbackContainer.style.display = "none"
       }
     } catch (error) {
-      console.error(" Error generando retroalimentación:", error)
+      console.error("Error generando retroalimentación:", error)
 
       // Hide loading message on error
       if (aiFeedbackContainer) {
         aiFeedbackContainer.style.display = "none"
       }
 
-      alert(` Error generando retroalimentación personalizada: ${error.message}`)
+      alert(`Error generando retroalimentación personalizada: ${error.message}`)
     } finally {
       if (generateBtn) generateBtn.classList.remove("loading")
     }
@@ -746,5 +736,5 @@ Mantén un tono empático, profesional y motivador. Usa emojis ocasionalmente pa
 
   // Initialize
   setupSliderListeners()
-  console.log(" Jousvex - Formulario simplificado con IA personalizada!")
+  console.log("Jousvex - Formulario seguro con CORS solucionado!")
 })
