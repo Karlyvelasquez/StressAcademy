@@ -2,3 +2,4 @@ Flask==2.3.3
 scikit-learn
 numpy
 gunicorn
+flask_cors
