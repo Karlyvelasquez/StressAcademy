@@ -6,9 +6,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from openai import OpenAI
 import traceback
-from flask import Flask, Response
-
-
 
 # Cargar variables de entorno
 load_dotenv()
@@ -30,19 +27,6 @@ try:
 except:
     model = None
     MODEL_AVAILABLE = False
-
-@app.after_request
-def set_headers(response: Response):
-    response.headers['Content-Security-Policy'] = "default-src 'self'"
-    response.headers['Strict-Transport-Security'] = "max-age=31536000; includeSubDomains; preload"
-    response.headers['X-Frame-Options'] = "DENY"
-    response.headers['X-Content-Type-Options'] = "nosniff"
-    response.headers['Referrer-Policy'] = "no-referrer"
-    response.headers['Permissions-Policy'] = "geolocation=(), microphone=(), camera=()"
-    response.headers['Cross-Origin-Opener-Policy'] = "same-origin"
-    response.headers['Cross-Origin-Embedder-Policy'] = "require-corp"
-    response.headers['Cross-Origin-Resource-Policy'] = "same-origin"
-    return response
 
 @app.route("/", methods=["GET", "POST"])
 def index():
