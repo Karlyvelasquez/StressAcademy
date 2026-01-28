@@ -83,7 +83,7 @@ Vivienda: {personal_data.get('living_situation', 'No especificado')}
 Trabajo: {personal_data.get('work_status', 'No especificado')}
 Fuentes de estrés: {personal_data.get('stress_sources', 'No especificado')}
 
-Por favor, proporciona:
+Por favor, proporciona, pero no lo escribas en la respuesta, por ejemplo no vayas a decir "saludo amigabole y no tan coro" y luego el mensaje, solo escribelo:
 
 1. Saludo amigable y no tan corto
 
