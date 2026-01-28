@@ -1087,6 +1087,61 @@ body {
   margin: 0 auto;
 }
 
+/* Developed By Section */
+.developed-by {
+  padding: 60px 0;
+  background: var(--background-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.developed-content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.developed-content h3 {
+  color: var(--text-primary);
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 30px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.padia-logo {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 15px var(--shadow-light));
+  transition: all 0.3s ease;
+}
+
+.padia-logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 8px 25px var(--shadow-medium));
+}
+
+@media (max-width: 768px) {
+  .developed-by {
+    padding: 40px 0;
+  }
+  
+  .padia-logo {
+    max-width: 300px;
+  }
+}
+
 /* Statistics Section - Enhanced Responsive */
 .statistics {
   padding: 100px 0;

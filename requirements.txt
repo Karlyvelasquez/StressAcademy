@@ -3,5 +3,5 @@ scikit-learn
 numpy
 gunicorn
 flask_cors
-dotenv
+python-dotenv
 openai>=1.0.0
